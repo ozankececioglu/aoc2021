@@ -14,15 +14,19 @@ fn main() -> io::Result<()> {
 
     let mut dist = 0;
     let mut depth = 0;
+    let mut aim = 0;
 
     for line in reader.lines().map(|l| l.unwrap()) {
         let mut fields = line.split_whitespace();
         let command = fields.next().unwrap();
         let arg = fields.next().unwrap().parse::<i32>().unwrap();
         match command {
-            "forward" => dist += arg,
-            "down" => depth += arg,
-            "up" => depth -= arg,
+            "forward" => {
+                dist += arg;
+                depth += aim * arg;
+            },
+            "down" => aim += arg,
+            "up" => aim -= arg,
             _ => ()
         }
     }
