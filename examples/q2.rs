@@ -33,7 +33,5 @@ fn main() -> io::Result<()> {
 
     println!("!### {} {} {}", dist, depth, dist * depth);
 
-
-
     Ok(())
 }
