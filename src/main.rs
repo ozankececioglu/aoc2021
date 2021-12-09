@@ -9,7 +9,7 @@ use regex::{Regex};
 
 
 fn main() -> io::Result<()> {
-    let file = File::open("data/q")?;
-    let reader = BufReader::new(file);
+    dbg!(23 & 2);
+
     Ok(())
 }

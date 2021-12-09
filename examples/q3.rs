@@ -12,30 +12,41 @@ fn main() -> io::Result<()> {
     let file = File::open("data/q3")?;
     let reader = BufReader::new(file);
 
-    let digits = 12;
-    let mut bucket: Vec<isize> = vec![0; digits];
-    let mut iline = 0;
+    let digits: u32 = 11;
+    let mut oxy: Vec<u32> = Vec::new();
 
     for line in reader.lines().map(|l| l.unwrap()) {
-        let num = isize::from_str_radix(line.as_str(), 2).unwrap();
-        for i in 0..digits {
-            bucket[i] += (num >> i) & 1;
-        }
-        iline += 1;
+        let num = u32::from_str_radix(line.as_str(), 2).unwrap();
+        oxy.push(num);
     }
 
-    let hline = iline / 2;
-    let mut gamma: isize = 0;
-    let mut epsilon: isize = 0;
-    for i in 0..digits {
-        if bucket[i] > hline {
-            gamma |= 1 << i;
+    let mut co2: Vec<u32> = oxy.clone();
+
+    for i in 0..=digits {
+        let c = oxy.iter().filter(|v| *v & (1u32 << digits - i) > 0).count();
+        if c >= (oxy.len() as f32 / 2.0).ceil() as usize {
+            oxy = oxy.into_iter().filter(|v| v & (1u32 << digits - i) > 0).collect();
         } else {
-            epsilon |= 1 << i;
+            oxy = oxy.into_iter().filter(|v| !v & (1u32 << digits - i) > 0).collect();
+        }
+        if oxy.len() == 1 {
+            break;
         }
     }
 
-    dbg!(gamma, epsilon, gamma * epsilon);
+    for i in 0..=digits {
+        let c = co2.iter().filter(|v| (*v & (1u32 << digits - i)) > 0).count();
+        if c < (co2.len() as f32 / 2.0).ceil() as usize {
+            co2 = co2.into_iter().filter(|v| v & (1u32 << digits - i) > 0).collect();
+        } else {
+            co2 = co2.into_iter().filter(|v| !v & (1u32 << digits - i) > 0).collect();
+        }
+        if co2.len() == 1 {
+            break;
+        }
+    }
+
+    dbg!(oxy[0], co2[0], oxy[0] * co2[0]);
 
     Ok(())
 }
