@@ -5,7 +5,8 @@ use std::convert::TryInto;
 use arrayvec::ArrayVec;
 
 use std::{iter};
-use std::collections::{HashMap, HashSet, VecDeque};
+use std::collections::{HashSet, VecDeque};
+use hashbrown::HashMap;
 use regex::{Regex};
 
 
@@ -77,7 +78,7 @@ fn main() -> io::Result<()> {
                     if boards_left == 0 {
                         let rows = board.rows.iter().sum::<i32>();
                         let cols = board.cols.iter().sum::<i32>();
-                        dbg!(rows, cols, num, rows * num);
+                        println!("{}", rows * num);
                         return Ok(());
                     }
                 }

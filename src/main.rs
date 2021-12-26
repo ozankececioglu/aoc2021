@@ -8,6 +8,7 @@ use std::collections::HashSet;
 use std::collections::VecDeque;
 use std::mem::replace;
 use std::rc::Rc;
+use std::slice::range;
 use regex::{Regex};
 
 
@@ -22,8 +23,11 @@ struct Train<'a> {
 
 
 fn main() -> io::Result<()> {
-    let a = [3, 4, 5];
-    a.iter
+    for i in range() {
+
+
+        println!("{}", i);
+    }
 
 
     Ok(())
