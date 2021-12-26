@@ -13,6 +13,7 @@ use regex::{Regex};
 struct Board {
     rows: [i32; 5],
     cols: [i32; 5],
+    won: bool
 }
 
 impl Board {
@@ -20,6 +21,7 @@ impl Board {
         Board {
             rows: [0; 5],
             cols: [0; 5],
+            won: false
         }
     }
 }
@@ -62,17 +64,22 @@ fn main() -> io::Result<()> {
         }
     }
 
+    let mut boards_left = boards.len();
     for num in numbers {
         if let Some(e) = entries.get(&num) {
             for entry in e {
                 let board = &mut boards[entry.iboard];
                 board.rows[entry.row] -= num;
                 board.cols[entry.col] -= num;
-                if board.rows[entry.row] == 0 || board.cols[entry.col] == 0 {
-                    let rows = board.rows.iter().fold(0, |x, y| x + y);
-                    let cols = board.cols.iter().fold(0, |x, y| x + y);
-                    dbg!(rows, cols, num, rows * num);
-                    return Ok(());
+                if !board.won && (board.rows[entry.row] == 0 || board.cols[entry.col] == 0) {
+                    board.won = true;
+                    boards_left -= 1;
+                    if boards_left == 0 {
+                        let rows = board.rows.iter().sum::<i32>();
+                        let cols = board.cols.iter().sum::<i32>();
+                        dbg!(rows, cols, num, rows * num);
+                        return Ok(());
+                    }
                 }
             }
         }
